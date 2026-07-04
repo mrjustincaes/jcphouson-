@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Justin Case Production | Brand Architecture</title>
+    <link rel="icon" type="image/png" href="Favicon.png">
     <style>
         :root {
             --bg-color: #ffffff;
@@ -687,9 +688,11 @@
 </head>
 <body>
 
+    <!-- Precise Interactive Cursor Trailing Elements -->
     <div class="custom-cursor" id="customCursor"></div>
     <div class="custom-cursor-dot" id="customCursorDot"></div>
 
+    <!-- Wireframe Lines -->
     <div class="grid-lines">
         <div class="line"></div>
         <div class="line"></div>
@@ -697,6 +700,7 @@
         <div class="line"></div>
     </div>
 
+    <!-- Header Frame -->
     <header>
         <div class="logo-container">
             <img src="Logo.png" alt="Justin Case Production">
@@ -709,6 +713,7 @@
     </header>
 
     <div class="stage-container">
+        <!-- HOME VIEW SECTION -->
         <div class="stage-section active" id="homeView">
             <div class="hero-canvas">
                 <div class="three-d-card-wrapper" id="unifyingCard">
@@ -739,6 +744,7 @@
             </section>
         </div>
 
+        <!-- SERVICES VIEW SECTION -->
         <div class="stage-section" id="servicesView">
             <div class="section-header">
                 <h2>Our <span>Capabilities</span></h2>
@@ -749,12 +755,28 @@
                     <p>Immersive front-end architecture leveraging industry-standard UX principles. We build hyper-custom interactive layouts optimized for massive conversion capabilities.</p>
                 </div>
                 <div class="service-card">
+                    <h4>Graphic Design &amp; Visual Assets</h4>
+                    <p>High-end digital and print graphic solutions. We create precision visual elements that establish dominant market authority and immediately captivate target audiences.</p>
+                </div>
+                <div class="service-card">
+                    <h4>UI/UX Architecture</h4>
+                    <p>Strategic interface design focused heavily on seamless user journeys. We engineer intuitive navigation structures for enterprise platforms and custom web applications.</p>
+                </div>
+                <div class="service-card">
                     <h4>Music Production &amp; Licensing</h4>
                     <p>Commercial tracking, engineering, and pristine master orchestration for top-tier global talent. Specializing in highly profitable sync distribution tracks.</p>
                 </div>
                 <div class="service-card">
+                    <h4>SEO &amp; Digital Marketing</h4>
+                    <p>Data-driven search engine optimization and targeted digital advertising frameworks designed to aggressively scale global client acquisition and brand visibility.</p>
+                </div>
+                <div class="service-card">
                     <h4>Original Media Production</h4>
-                    <p>High-concept digital video campaigns, highly viral short internet entertainment modules, and premium educational platforms tailored to modern consumer dynamics.</p>
+                    <p>High-concept digital video campaigns, viral short internet entertainment modules, and premium educational platforms tailored to modern consumer dynamics.</p>
+                </div>
+                <div class="service-card">
+                    <h4>Management Strategy &amp; Consulting</h4>
+                    <p>Executive-level consulting to streamline creative operations, optimize brand positioning, and maximize overall operational impact within competitive global markets.</p>
                 </div>
                 <div class="service-card">
                     <h4>Enterprise Branding Architecture</h4>
@@ -763,6 +785,7 @@
             </div>
         </div>
 
+        <!-- CONTACT VIEW SECTION -->
         <div class="stage-section" id="contactView">
             <div class="section-header">
                 <h2>Initiate <span>Contact</span></h2>
@@ -800,6 +823,7 @@
                         </div>
                         <button type="submit" class="submit-btn" id="formSubmitBtn">
                             <span class="btn-text">Transmit Framework</span>
+                            <!-- SVG Paper Plane -->
                             <svg class="paper-plane" viewBox="0 0 24 24">
                                 <line x1="22" y1="2" x2="11" y2="13"></line>
                                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -816,6 +840,7 @@
         </div>
     </div>
 
+    <!-- Persistent Footer -->
     <footer>
         <div class="footer-logo">
             <img src="Logo.png" alt="Justin Case Production Logo">
