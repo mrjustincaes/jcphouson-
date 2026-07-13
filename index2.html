@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Justin Case Production | Ad Agency, Web & UX Design by Chekube Azu</title>
+    <meta name="description" content="Justin Case Production is a premier Houston ad agency specializing in brand architecture, web design, and UX design, led by founder Chekube Azu.">
+    <meta name="keywords" content="Chekube Azu, Azu, Justin Case Production, Ad agency, web designer, ux designer, Houston, Brand Architecture, Media Production">
+    
+    <link rel="shortcut icon" type="image/png" href="favicon.png?v=2">
+    <link rel="icon" type="image/png" href="favicon.png?v=2">
+    
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --brand-red: #e11d48;
+            --brand-dark: #111111;
+            --font-sans: 'Helvetica Neue', Arial, sans-serif;
+            --perspective: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body, html {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+
+        body.is-warping {
+            overflow: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f5f5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--brand-red);
+            border-radius: 3px;
+        }
+
+        /* Premium Custom Cursor Matrix */
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-color);
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+        }
+
+        .custom-cursor-dot {
+            width: 4px;
+            height: 4px;
+            background-color: var(--brand-red);
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @media (pointer: coarse) {
+            .custom-cursor, .custom-cursor-dot {
+                display: none !important;
+            }
+        }
+
+        /* INTERACTIVE ARCHITECTURAL MESH BACKGROUND */
+        #brandMesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Persistent Navigation Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.6));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: padding 0.3s;
+        }
+
+        .logo-container img {
+            height: 45px;
+            object-fit: contain;
+            display: block;
+        }
+
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            position: relative;
+            padding: 5px 0;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--brand-red);
+            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        nav a:hover::after, nav a.active::after {
+            width: 100%;
+        }
+
+        /* Multi-layered Stage for Light Speed Transition */
+        .stage-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            perspective: 1500px; 
+            overflow: hidden;
+            z-index: 5;
+        }
+
+        .stage-section {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            padding-top: 140px;
+            z-index: 5;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateZ(-800px) scale(0.5);
+            filter: blur(15px);
+            pointer-events: none;
+            transition: transform 1s cubic-bezier(0.7, 0, 0.2, 1), 
+                        opacity 1s cubic-bezier(0.7, 0, 0.2, 1), 
+                        filter 1s cubic-bezier(0.7, 0, 0.2, 1),
+                        visibility 1s;
+        }
+
+        .stage-section.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateZ(0) scale(1);
+            filter: blur(0px);
+            position: relative;
+            z-index: 10;
+            pointer-events: auto;
+        }
+
+        .stage-section.warp-out {
+            transform: translateZ(1200px) scale(3.5);
+            opacity: 0;
+            filter: blur(30px);
+            z-index: 15; 
+            pointer-events: none;
+        }
+
+        /* CINEMATIC SCROLL REVEAL ENGINE */
+        .reveal-node {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            filter: blur(10px);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform, opacity, filter;
+        }
+
+        .reveal-node.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        /* --- HOME PAGE STYLE --- */
+        .hero-canvas {
+            height: calc(100vh - 140px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: var(--perspective);
+            position: relative;
+        }
+
+        .three-d-card-wrapper {
+            transform-style: preserve-3d;
+            position: relative;
+            width: 80%;
+            max-width: 1100px;
+            height: 550px;
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+        }
+
+        .ambient-backplate {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(249,249,249,0.9) 100%);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            transform: translateZ(-50px);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.08);
+        }
+
+        .mid-layer-media {
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            width: 50%;
+            height: 80%;
+            border-radius: 8px;
+            overflow: hidden;
+            transform: translateZ(30px);
+            border: 1px solid rgba(225, 29, 72, 0.2);
+            background: url('Logo.png') center/contain no-repeat;
+            background-color: #fafafa;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .foreground-typography {
+            position: absolute;
+            right: 5%;
+            top: 25%;
+            width: 50%;
+            transform: translateZ(90px);
+            pointer-events: none;
+            text-align: right;
+        }
+
+        .foreground-typography h1 {
+            font-size: 5.5rem;
+            font-weight: 300;
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            color: #111111;
+        }
+
+        .foreground-typography h1 span {
+            color: var(--brand-red);
+            font-weight: 700;
+        }
+
+        .foreground-typography p {
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #666666;
+            font-weight: 600;
+        }
+
+        /* --- STATS & HISTORY BLOCK --- */
+        .legacy-strip {
+            background-color: rgba(252,252,252,0.8);
+            backdrop-filter: blur(10px);
+            padding: 100px 10%;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .legacy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @keyframes number-bounce {
+            0% { transform: scale(1) translateY(0); }
+            20% { transform: scale(1.2) translateY(-15px); }
+            40% { transform: scale(0.95) translateY(5px); }
+            60% { transform: scale(1.1) translateY(-8px); }
+            80% { transform: scale(1.02) translateY(2px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        .stat-node h3 {
+            font-size: 4rem;
+            color: var(--brand-red);
+            font-weight: 300;
+            margin-bottom: 10px;
+            display: inline-block; 
+            transition: color 0.3s;
+        }
+
+        @media (hover: hover) {
+            .stat-node:hover h3 {
+                animation: number-bounce 0.8s cubic-bezier(0.28, 0.84, 0.42, 1) forwards;
+                color: var(--brand-dark);
+            }
+        }
+
+        .stat-node p {
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            line-height: 1.6;
+            color: #555555;
+        }
+
+        /* --- SERVICES PAGE STYLE --- */
+        .section-header {
+            padding: 0 10% 60px 10%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header h2 {
+            font-size: 3.5rem;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: #111111;
+        }
+
+        .section-header h2 span {
+            color: var(--brand-red);
+        }
+
+        .services-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10% 100px 10%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .service-card {
+            background: rgba(253,253,253,0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 50px;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.4s, transform 0.4s, box-shadow 0.4s;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+
+        @media (hover: hover) {
+            .service-card:hover {
+                border-color: rgba(225, 29, 72, 0.4);
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            }
+            .service-card:hover::before {
+                transform: scaleX(1);
+            }
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--brand-red);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s;
+        }
+
+        .service-card h4 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+            color: #111111;
+        }
+
+        .service-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666666;
+        }
+
+        /* --- CONTACT PAGE STYLE & FORM ANIMATIONS --- */
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10% 100px 10%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .contact-info-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .contact-method {
+            margin-bottom: 40px;
+        }
+
+        .contact-method label {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--brand-red);
+            margin-bottom: 10px;
+        }
+
+        .contact-method a, .contact-method p {
+            font-size: 2rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+            transition: color 0.3s;
+        }
+
+        .contact-method a:hover {
+            color: var(--brand-red);
+        }
+
+        .form-interaction-area {
+            position: relative;
+            width: 100%;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            background: rgba(253,253,253,0.85);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            transition: opacity 0.4s, filter 0.4s;
+        }
+
+        .contact-form.submitted {
+            opacity: 0;
+            filter: blur(10px);
+            pointer-events: none;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .form-group input, .form-group textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(0,0,0,0.15);
+            padding: 15px 0;
+            color: var(--text-color);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--brand-red);
+        }
+
+        .form-group label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #888888;
+            transition: color 0.3s;
+        }
+
+        .form-group input:focus + label {
+            color: var(--brand-red);
+        }
+
+        .submit-btn {
+            background-color: var(--brand-dark);
+            color: #ffffff;
+            border: none;
+            padding: 20px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.3s, color 0.3s;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--brand-red);
+        }
+
+        .btn-text {
+            transition: opacity 0.3s;
+        }
+
+        .submit-btn.sending .btn-text {
+            opacity: 0;
+        }
+
+        .paper-plane {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            opacity: 0;
+            pointer-events: none;
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @keyframes paper-plane-fly {
+            0% { transform: translate(-30px, 30px) scale(0.5); opacity: 0; }
+            20% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(150px, -150px) scale(0.5); opacity: 0; }
+        }
+
+        .submit-btn.sending .paper-plane {
+            animation: paper-plane-fly 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .success-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s;
+            z-index: 10;
+        }
+
+        .success-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .success-overlay h3 {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: var(--brand-red);
+            margin-bottom: 10px;
+        }
+
+        .success-overlay p {
+            color: #666666;
+            font-size: 1.1rem;
+        }
+
+        /* Persistent Premium Footer */
+        footer {
+            background-color: rgba(250,250,250,0.9);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding: 60px 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .footer-nav a {
+            color: #888888;
+            text-decoration: none;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+
+        .footer-nav a:hover {
+            color: var(--brand-red);
+        }
+
+        .copyright {
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: #999999;
+            text-transform: uppercase;
+        }
+
+        /* === MOBILE RESPONSIVE OPTIMIZATIONS === */
+        @media (max-width: 968px) {
+            header {
+                flex-direction: column;
+                padding: 20px 5%;
+                gap: 15px;
+            }
+            .stage-section {
+                padding-top: 180px; 
+            }
+            nav {
+                gap: 20px;
+            }
+            .three-d-card-wrapper {
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+            }
+            .ambient-backplate {
+                display: none;
+            }
+            .mid-layer-media {
+                position: relative;
+                width: 100%;
+                height: 250px;
+                top: 0;
+                left: 0;
+                transform: none !important;
+            }
+            .foreground-typography {
+                position: relative;
+                width: 100%;
+                top: 0;
+                right: 0;
+                transform: none !important;
+                text-align: left;
+            }
+            .foreground-typography h1 {
+                font-size: 3rem;
+            }
+            .section-header h2 {
+                font-size: 2.5rem;
+            }
+            .legacy-grid, .services-wrapper, .contact-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .contact-form {
+                padding: 30px 20px;
+            }
+            .contact-method a, .contact-method p {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Architectural Mesh Canvas -->
+    <canvas id="brandMesh"></canvas>
+
+    <!-- Precise Interactive Cursor -->
+    <div class="custom-cursor" id="customCursor"></div>
+    <div class="custom-cursor-dot" id="customCursorDot"></div>
+
+    <!-- Header Frame -->
+    <header>
+        <div class="logo-container">
+            <img src="Logo.png" alt="Justin Case Production">
+        </div>
+        <nav>
+            <a href="#home" class="nav-trigger active" data-target="homeView">Home</a>
+            <a href="#services" class="nav-trigger" data-target="servicesView">Services</a>
+            <a href="#contact" class="nav-trigger" data-target="contactView">Contact</a>
+        </nav>
+    </header>
+
+    <div class="stage-container">
+        <!-- HOME VIEW SECTION -->
+        <div class="stage-section active" id="homeView">
+            <div class="hero-canvas">
+                <div class="three-d-card-wrapper reveal-node" id="unifyingCard">
+                    <div class="ambient-backplate"></div>
+                    <div class="mid-layer-media"></div>
+                    <div class="foreground-typography">
+                        <h1>Justin Case<br><span>Production</span></h1>
+                        <p>Brand Architecture</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="legacy-strip reveal-node">
+                <div class="legacy-grid">
+                    <div class="stat-node">
+                        <h3>200+</h3>
+                        <p>Global web platforms developed and scaled for multimillion-dollar corporate entities.</p>
+                    </div>
+                    <div class="stat-node">
+                        <h3>2010</h3>
+                        <p>Established core creative identity, managing confidential high-level artist packages and sync properties.</p>
+                    </div>
+                    <div class="stat-node">
+                        <h3>$1M+</h3>
+                        <p>Projected operational scale utilizing dynamic original video IPs and robust cloud assets.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SERVICES VIEW SECTION -->
+        <div class="stage-section" id="servicesView">
+            <div class="section-header reveal-node">
+                <h2>Our <span>Capabilities</span></h2>
+            </div>
+            <div class="services-wrapper">
+                <div class="service-card reveal-node">
+                    <h4>Web Design &amp; Development</h4>
+                    <p>Immersive front-end architecture leveraging industry-standard UX principles. We build hyper-custom interactive layouts optimized for massive conversion capabilities.</p>
+                </div>
+                <div class="service-card reveal-node">
+                    <h4>Graphic Design &amp; Visual Assets</h4>
+                    <p>High-end digital and print graphic solutions. We create precision visual elements that establish dominant market authority and immediately captivate target audiences.</p>
+                </div>
+                <div class="service-card reveal-node">
+                    <h4>UI/UX Architecture</h4>
+                    <p>Strategic interface design focused heavily on seamless user journeys. We engineer intuitive navigation structures for enterprise platforms and custom web applications.</p>
+                </div>
+                <div class="service-card reveal-node">
+                    <h4>Music Production &amp; Licensing</h4>
+                    <p>Commercial tracking, engineering, and pristine master orchestration for top-tier global talent. Specializing in highly profitable sync distribution tracks.</p>
+                </div>
+                <div class="service-card reveal-node">
+                    <h4>SEO &amp; Digital Marketing</h4>
+                    <p>Data-driven search engine optimization and targeted digital advertising frameworks designed to aggressively scale global client acquisition and brand visibility.</p>
+                </div>
+                <div class="service-card reveal-node">
+                    <h4>Original Media Production</h4>
+                    <p>High-concept digital video campaigns, viral short internet entertainment modules, and premium educational platforms tailored to modern consumer dynamics.</p>
+                </div>
+                <div class="service-card reveal-node">
+                    <h4>Management Strategy &amp; Consulting</h4>
+                    <p>Executive-level consulting to streamline creative operations, optimize brand positioning, and maximize overall operational impact within competitive global markets.</p>
+                </div>
+                <div class="service-card reveal-node">
+                    <h4>Enterprise Branding Architecture</h4>
+                    <p>Complete execution of brand strategies from initial conceptualization to full multi-channel rollout, serving enterprise operations and high-profile creators.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTACT VIEW SECTION -->
+        <div class="stage-section" id="contactView">
+            <div class="section-header reveal-node">
+                <h2>Initiate <span>Contact</span></h2>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info-block reveal-node">
+                    <div class="contact-method">
+                        <label>Direct Inquiries</label>
+                        <a href="tel:2818491590">281.849.1590</a>
+                    </div>
+                    <div class="contact-method">
+                        <label>Secure Mail Network</label>
+                        <a href="mailto:design@jcphouston.com">design@jcphouston.com</a>
+                    </div>
+                    <div class="contact-method">
+                        <label>Headquarters</label>
+                        <p>Houston, Texas</p>
+                    </div>
+                </div>
+                
+                <div class="form-interaction-area reveal-node">
+                    <form class="contact-form" id="mainContactForm">
+                        <div class="error-banner" id="formErrorBanner"></div>
+                        <div class="form-group">
+                            <input type="text" id="clientName" name="name" required placeholder=" ">
+                            <label for="clientName">Corporate Identity / Name</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="clientEmail" name="email" required placeholder=" ">
+                            <label for="clientEmail">Email Endpoint</label>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="clientMessage" name="message" rows="5" required placeholder=" "></textarea>
+                            <label for="clientMessage">Project Framework Brief</label>
+                        </div>
+                        <button type="submit" class="submit-btn" id="formSubmitBtn">
+                            <span class="btn-text">Transmit Framework</span>
+                            <svg class="paper-plane" viewBox="0 0 24 24">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </form>
+                    
+                    <div class="success-overlay" id="successMessage">
+                        <h3>SENT</h3>
+                        <p>Your framework has been successfully transmitted to our secure network.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Persistent Footer -->
+    <footer>
+        <div class="footer-logo reveal-node">
+            <img src="Logo.png" alt="Justin Case Production Logo">
+        </div>
+        <div class="footer-nav reveal-node">
+            <a href="#home" class="nav-trigger" data-target="homeView">Home</a>
+            <a href="#services" class="nav-trigger" data-target="servicesView">Services</a>
+            <a href="#contact" class="nav-trigger" data-target="contactView">Contact</a>
+        </div>
+        <div class="copyright reveal-node">
+            &copy; 2026 Justin Case Production. All Rights Reserved. Securing Creative Legacy.
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Architectural Interactive Mesh Background (Canvas) ---
+        const canvas = document.getElementById('brandMesh');
+        const ctx = canvas.getContext('2d');
+        let particlesArray;
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let mouse = {
+            x: null,
+            y: null,
+            radius: (canvas.height/80) * (canvas.width/80)
+        }
+
+        window.addEventListener('mousemove', function(event) {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        // Add touch support for mobile interaction
+        window.addEventListener('touchmove', function(event) {
+            mouse.x = event.touches[0].clientX;
+            mouse.y = event.touches[0].clientY;
+        });
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) { this.directionX = -this.directionX; }
+                if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; }
+
+                // Check collision/interaction with mouse/touch
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                if (distance < mouse.radius + this.size){
+                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) { this.x += 2; }
+                    if (mouse.x > this.x && this.x > this.size * 10) { this.x -= 2; }
+                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) { this.y += 2; }
+                    if (mouse.y > this.y && this.y > this.size * 10) { this.y -= 2; }
+                }
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function initMesh() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 12000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 1) - 0.5;
+                let directionY = (Math.random() * 1) - 0.5;
+                let color = (Math.random() > 0.8) ? '#e11d48' : '#cccccc'; // Brand Red or Light Grey
+                
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function connectMesh() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
+                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width/7) * (canvas.height/7)) {
+                        opacityValue = 1 - (distance/20000);
+                        ctx.strokeStyle = 'rgba(170, 170, 170,' + opacityValue + ')';
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateMesh() {
+            requestAnimationFrame(animateMesh);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connectMesh();
+        }
+
+        window.addEventListener('resize', function(){
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+            mouse.radius = (canvas.height/80) * (canvas.width/80);
+            initMesh();
+        });
+
+        initMesh();
+        animateMesh();
+
+        // --- 2. Cinematic Scroll Revealer Engine (Intersection Observer) ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Optional: Unobserve after revealing for performance
+                    // observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        // Function to trigger observer on all current reveal nodes
+        function initScrollReveals() {
+            document.querySelectorAll('.reveal-node').forEach(node => {
+                node.classList.remove('visible'); // reset
+                revealObserver.observe(node);
+            });
+            // Force check immediately for items currently in view
+            setTimeout(() => {
+                document.querySelectorAll('.reveal-node').forEach(node => {
+                    const rect = node.getBoundingClientRect();
+                    if(rect.top < window.innerHeight) {
+                        node.classList.add('visible');
+                    }
+                });
+            }, 100);
+        }
+        
+        initScrollReveals(); // Run on initial load
+
+        // --- 3. Custom Cursor & PC Gyro Interaction ---
+        const cursorD = document.getElementById('customCursor');
+        const dotD = document.getElementById('customCursorDot');
+        const unifyingCard = document.getElementById('unifyingCard');
+
+        document.addEventListener('mousemove', (e) => {
+            if(window.innerWidth > 968) {
+                dotD.style.left = `${e.clientX}px`;
+                dotD.style.top = `${e.clientY}px`;
+                cursorD.animate({
+                    left: `${e.clientX}px`,
+                    top: `${e.clientY}px`
+                }, { duration: 250, fill: "forwards" });
+
+                // Desktop Parallax
+                if(unifyingCard) {
+                    const xAxis = (window.innerWidth / 2 - e.clientX) / 25;
+                    const yAxis = (window.innerHeight / 2 - e.clientY) / 25;
+                    unifyingCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                }
+            }
+        });
+
+        document.addEventListener('mouseleave', () => {
+            if(unifyingCard && window.innerWidth > 968) {
+                unifyingCard.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            }
+        });
+
+        // --- 4. Mobile Gyroscope Integration (Device Orientation) ---
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', function(event) {
+                if(window.innerWidth <= 968 && unifyingCard) {
+                    // event.gamma is left-to-right tilt in degrees (-90 to 90)
+                    // event.beta is front-to-back tilt in degrees (-180 to 180)
+                    let yTilt = event.gamma ? (event.gamma / 3) : 0; 
+                    let xTilt = event.beta ? ((event.beta - 45) / 3) : 0; // offset by 45deg holding angle
+
+                    // Cap the max rotation so it doesn't flip over
+                    yTilt = Math.max(-15, Math.min(15, yTilt));
+                    xTilt = Math.max(-15, Math.min(15, xTilt));
+
+                    unifyingCard.style.transform = `rotateY(${yTilt}deg) rotateX(${-xTilt}deg)`;
+                }
+            });
+        }
+
+        // --- 5. Light Speed View Routing Engine ---
+        const links = document.querySelectorAll('.nav-trigger');
+        const sections = document.querySelectorAll('.stage-section');
+        let isAnimating = false;
+
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isAnimating) return;
+
+                const targetID = link.getAttribute('data-target');
+                const currentActive = document.querySelector('.stage-section.active');
+
+                if (currentActive && currentActive.id === targetID) return;
+
+                isAnimating = true;
+                document.body.classList.add('is-warping');
+
+                links.forEach(l => l.classList.remove('active'));
+                document.querySelectorAll(`.nav-trigger[data-target="${targetID}"]`).forEach(l => {
+                    l.classList.add('active');
+                });
+
+                if (currentActive) {
+                    currentActive.classList.remove('active');
+                    currentActive.classList.add('warp-out');
+                }
+
+                const targetSection = document.getElementById(targetID);
+                targetSection.classList.remove('warp-out');
+                
+                setTimeout(() => {
+                    targetSection.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                    initScrollReveals(); // Re-trigger the scroll animations for the new page
+                }, 50);
+
+                setTimeout(() => {
+                    if (currentActive) {
+                        currentActive.classList.remove('warp-out');
+                    }
+                    isAnimating = false;
+                    document.body.classList.remove('is-warping');
+                }, 1000); 
+            });
+        });
+
+        // --- 6. AJAX Form Submission ---
+        const contactForm = document.getElementById('mainContactForm');
+        const formSubmitBtn = document.getElementById('formSubmitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const errorBanner = document.getElementById('formErrorBanner');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            errorBanner.classList.remove('active');
+            errorBanner.innerText = "";
+            formSubmitBtn.classList.add('sending');
+
+            const formData = {
+                name: document.getElementById('clientName').value,
+                email: document.getElementById('clientEmail').value,
+                message: document.getElementById('clientMessage').value,
+                _subject: "New Project Framework from JCP Website",
+                _captcha: "false" 
+            };
+
+            fetch("https://formsubmit.co/ajax/design@jcphouston.com", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                setTimeout(() => {
+                    contactForm.classList.add('submitted');
+                    successMessage.classList.add('active');
+                    contactForm.reset();
+                    formSubmitBtn.classList.remove('sending');
+                    
+                    setTimeout(() => {
+                        successMessage.classList.remove('active');
+                        contactForm.classList.remove('submitted');
+                    }, 5000);
+                }, 900);
+            })
+            .catch(error => {
+                console.error('Transmission Error:', error);
+                errorBanner.innerText = "Connection failed. Please use the direct email link above.";
+                errorBanner.classList.add('active');
+                formSubmitBtn.classList.remove('sending');
+            });
+        });
+    </script>
+</body>
+</html>
